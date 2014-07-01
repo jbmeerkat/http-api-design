@@ -1,10 +1,13 @@
 # HTTP API Design Guide
 
-## Introduction
+## Вступление
 
+Это руководство описывает методы проектирования HTTP+JSON API, полученные
+в процессе работы над [Heroku Platform API](https://devcenter.heroku.com/articles/platform-api-reference).
 This guide describes a set of HTTP+JSON API design practices, originally
 extracted from work on the [Heroku Platform API](https://devcenter.heroku.com/articles/platform-api-reference).
 
+Это руководство информирует о дополнениях в этом API и 
 This guide informs additions to that API and also guides new internal
 APIs at Heroku. We hope it’s also of interest to API designers
 outside of Heroku.
@@ -19,51 +22,67 @@ cover all of the fundamentals of those in this guide.
 
 We welcome [contributions](CONTRIBUTING.md) to this guide.
 
-## Contents
+## Содержание
 
-*  [Return appropriate status codes](#return-appropriate-status-codes)
-*  [Provide full resources where available](#provide-full-resources-where-available)
-*  [Accept serialized JSON in request bodies](#accept-serialized-json-in-request-bodies)
-*  [Provide resource (UU)IDs](#provide-resource-uuids)
-*  [Provide standard timestamps](#provide-standard-timestamps)
-*  [Use UTC times formatted in ISO8601](#use-utc-times-formatted-in-iso8601)
-*  [Use consistent path formats](#use-consistent-path-formats)
-*  [Downcase paths and attributes](#downcase-paths-and-attributes)
-*  [Nest foreign key relations](#nest-foreign-key-relations)
-*  [Support non-id dereferencing for convenience](#support-non-id-dereferencing-for-convenience)
-*  [Generate structured errors](#generate-structured-errors)
-*  [Support caching with Etags](#support-caching-with-etags)
-*  [Trace requests with Request-Ids](#trace-requests-with-request-ids)
-*  [Paginate with ranges](#paginate-with-ranges)
-*  [Show rate limit status](#show-rate-limit-status)
-*  [Version with Accepts header](#version-with-accepts-header)
-*  [Minimize path nesting](#minimize-path-nesting)
-*  [Provide machine-readable JSON schema](#provide-machine-readable-json-schema)
-*  [Provide human-readable docs](#provide-human-readable-docs)
-*  [Provide executable examples](#provide-executable-examples)
-*  [Describe stability](#describe-stability)
-*  [Require TLS](#require-tls)
-*  [Pretty-print JSON by default](#pretty-print-json-by-default)
+*  [Возвращайте соответствующие коды состояния](#return-appropriate-status-codes)
+*  [Предоставляйте ресурс полностью, когда это возможно](#provide-full-resources-where-available)
+*  [Принимайте сериализованный JSON в теле запроса](#accept-serialized-json-in-request-bodies)
+*  [Предоставляйте (UU)ID ресурса](#provide-resource-uuids)
+*  [Предоставляйте стандартные timestamp'ы](#provide-standard-timestamps)
+*  [Используйте время в стандарте UTC отформатированное согласно ISO8601](#use-utc-times-formatted-in-iso8601)
+*  [Используйте однообразное форматирование путей](#use-consistent-path-formats)
+*  [Указывайте пути и аттрибуты в нижнем регистре](#downcase-paths-and-attributes)
+*  [Делайте атрибуты связанных ассоциаций вложенными](#nest-foreign-key-relations)
+*  [Оставляйте возможность получение ресурса не только по идентификатору](#support-non-id-dereferencing-for-convenience)
+*  [Генерируйте структурированные ошибки](#generate-structured-errors)
+*  [Поддерживайте кэширование с помощью Etags](#support-caching-with-etags)
+*  [Отслеживайте запросы с помощью Request-Id](#trace-requests-with-request-ids)
+*  [Организуйте постраницную разбивку с помощью диапазонов](#paginate-with-ranges)
+*  [Показывайте состояние ограничения частоты запросов](#show-rate-limit-status)
+*  [Указывайте версию с помощью заголовков Accept](#version-with-accepts-header)
+*  [Минимизируйте вложенность путей](#minimize-path-nesting)
+*  [Предоставляйте машиночитаемую JSON схему](#provide-machine-readable-json-schema)
+*  [Предоставляйте человекочитаемую документацию](#provide-human-readable-docs)
+*  [Предоставляйте примеры использования](#provide-executable-examples)
+*  [Предоставляйте информацию о стабильности](#describe-stability)
+*  [Требуйте использование TLS](#require-tls)
+*  [Форматируйте JSON по умолчанию](#pretty-print-json-by-default)
 
+### Возвращайте соответствующие соответствующие коды состояния
 ### Return appropriate status codes
 
+Возвращайте соответствующие соответствующие коды состояния HTTP с каждым
+запросом. Успешные запросы должны возвращать коды в соответствии со
+следующим:
 Return appropriate HTTP status codes with each response. Successful
 responses should be coded according to this guide:
 
+* `200`: Для успешно выполненного `GET` запроса и `DELETE` или 
+  `PATCH` запроса, выполненного синхронно
 * `200`: Request succeeded for a `GET` calls, and for `DELETE` or
   `PATCH` calls that complete synchronously
+* `201`: Успешно выполненный синхронный `POST` запрос
 * `201`: Request succeeded for a `POST` call that completes
   synchronously
+* `202`: Успешно завершенный `POST`, `DELETE`, или `PATCH` запрос,
+  обработанный асинхронно
 * `202`: Request accepted for a `POST`, `DELETE`, or `PATCH` call that
   will be processed asynchronously
+* `206`: Успешно выполненный `GET` запрос, для которого был возвращен частичный ответ: see [above on ranges](#paginate-with-ranges)
 * `206`: Request succeeded on `GET`, but only a partial response
-  returned: see [above on ranges](#paginate-with-ranges)
+  returned: см. [далее про диапазоны](#paginate-with-ranges)
 
+Обращайтесь к [спецификацию кодов возврата HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+за рекомендациями по кодам возврата для пользовательских ошибок и ошибок сервера.
 Refer to the [HTTP response code spec](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
 for guidance on status codes for user error and server error cases.
 
+### Предоставляйте ресурс полностью, когда это возможно
 ### Provide full resources where available
 
+Предоставляйте в ответе полное представление ресурса(т.е. объект со всеми
+атрибутами) когда это возможно. Всегда возвращайте полный ресурс в ответах
+с кодами 200 и 201, включая `PUT`/`PATCH` и `DELETE` запросы, например:
 Provide the full resource representation (i.e. the object with all
 attributes) whenever possible in the response. Always provide the full
 resource on 200 and 201 responses, including `PUT`/`PATCH` and `DELETE`
@@ -84,6 +103,7 @@ Content-Type: application/json;charset=utf-8
 }
 ```
 
+Ответы с кодом 202 не должны включать полное представление ресурса, например:
 202 responses will not include the full resource representation,
 e.g.:
 
@@ -97,8 +117,12 @@ Content-Type: application/json;charset=utf-8
 {}
 ```
 
+### Принимайте сериализованный JSON в теле запроса
 ### Accept serialized JSON in request bodies
 
+Принимайте сериалихованный JSON в теле `PUT`/`PATCH`/`POST` запросов
+либо вместо, либо в дополнение к данным из формы. Это создает симметрию
+с сериализованным в JSON телом запрома, например:
 Accept serialized JSON on `PUT`/`PATCH`/`POST` request bodies, either
 instead of or in addition to form-encoded data. This creates symmetry
 with JSON-serialized response bodies, e.g.:
@@ -119,21 +143,32 @@ $ curl -X POST https://service.com/apps \
 }
 ```
 
+### Предоставляйте (UU)ID ресурса
 ### Provide resource (UU)IDs
 
+
+Дайте каждому ресурсу `id` атрибут по умолчанию. Используйте UUID всегда,
+если только у вас нет веской причины не делать этого. Не используйте
+идентификаторы, которые не являются уникальными между всеми экземплярами
+сервиса или могут совпадать с идентификаторами другого ресурса в сервисе,
+особенно автоматически увеличиваемые идентификаторы.
 Give each resource an `id` attribute by default. Use UUIDs unless you
 have a very good reason not to. Don’t use IDs that won’t be globally
 unique across instances of the service or other resources in the
 service, especially auto-incrementing IDs.
 
+Отображайте UUID в нижнем регистре, в формате `8-4-4-4-12`, например:
 Render UUIDs in downcased `8-4-4-4-12` format, e.g.:
 
 ```
 "id": "01234567-89ab-cdef-0123-456789abcdef"
 ```
 
+### Предоставляйте стандартные timestamp'ы
 ### Provide standard timestamps
 
+По умолчанию предоставляйте временные метки(timestamp) `created_at` и `updated_at`
+ресурса, например:
 Provide `created_at` and `updated_at` timestamps for resources by default,
 e.g:
 
@@ -146,11 +181,16 @@ e.g:
 }
 ```
 
+Эти временные метки могут не иметь смысла для некоторых ресурсов и, в
+таком случае, могут быть опущены
 These timestamps may not make sense for some resources, in which case
 they can be omitted.
 
+### Используйте время в стандарте UTC отформатированное согласно ISO8601
 ### Use UTC times formatted in ISO8601
 
+Принимайте и возвращайте время только в стандарте UTC. Отображайте
+время, отформатированное согласно спецификации ISO8601, например:
 Accept and return times in UTC only. Render times in ISO8601 format,
 e.g.:
 
@@ -158,13 +198,24 @@ e.g.:
 "finished_at": "2012-01-01T12:00:00Z"
 ```
 
+### Используйте однообразное форматирование путей
 ### Use consistent path formats
 
+#### Именование ресурсов
 #### Resource names
+
+Используйте множественное число в имени ресурса, за исключением тех случаев, когда ресурс представлен в системе в единственном числе(например, в большинстве систем у пользователя только одна учетная запись). Это позволит сделать доступ к конкретным ресурсам однообразным, например:
+
+```
+/books
+/posts/{id}/comments
+```
 
 Use the plural version of a resource name unless the resource in question is a singleton within the system (for example, in most systems a given user would only ever have one account). This keeps it consistent in the way you refer to particular resources.
 
+#### Действия
 #### Actions
+
 
 Prefer endpoint layouts that don’t need any special actions for
 individual resources. In cases where special actions are needed, place
