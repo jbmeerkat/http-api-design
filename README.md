@@ -7,7 +7,7 @@
 This guide describes a set of HTTP+JSON API design practices, originally
 extracted from work on the [Heroku Platform API](https://devcenter.heroku.com/articles/platform-api-reference).
 
-Это руководство информирует о дополнениях в этом API и 
+Это руководство информирует о дополнениях в этом API и
 This guide informs additions to that API and also guides new internal
 APIs at Heroku. We hope it’s also of interest to API designers
 outside of Heroku.
@@ -48,16 +48,16 @@ We welcome [contributions](CONTRIBUTING.md) to this guide.
 *  [Требуйте использование TLS](#require-tls)
 *  [Форматируйте JSON по умолчанию](#pretty-print-json-by-default)
 
-### Возвращайте соответствующие соответствующие коды состояния
+### Возвращайте соответствующие коды состояния
 ### Return appropriate status codes
 
-Возвращайте соответствующие соответствующие коды состояния HTTP с каждым
+Возвращайте соответствующие коды состояния HTTP с каждым
 запросом. Успешные запросы должны возвращать коды в соответствии со
 следующим:
 Return appropriate HTTP status codes with each response. Successful
 responses should be coded according to this guide:
 
-* `200`: Для успешно выполненного `GET` запроса и `DELETE` или 
+* `200`: Для успешно выполненного `GET` запроса и `DELETE` или
   `PATCH` запроса, выполненного синхронно
 * `200`: Request succeeded for a `GET` calls, and for `DELETE` or
   `PATCH` calls that complete synchronously
@@ -89,7 +89,7 @@ resource on 200 and 201 responses, including `PUT`/`PATCH` and `DELETE`
 requests, e.g.:
 
 ```
-$ curl -X DELETE \  
+$ curl -X DELETE \
   https://service.com/apps/1f9b/domains/0fd4
 
 HTTP/1.1 200 OK
@@ -108,7 +108,7 @@ Content-Type: application/json;charset=utf-8
 e.g.:
 
 ```
-$ curl -X DELETE \  
+$ curl -X DELETE \
   https://service.com/apps/1f9b/dynos/05bd
 
 HTTP/1.1 202 Accepted
@@ -120,9 +120,9 @@ Content-Type: application/json;charset=utf-8
 ### Принимайте сериализованный JSON в теле запроса
 ### Accept serialized JSON in request bodies
 
-Принимайте сериалихованный JSON в теле `PUT`/`PATCH`/`POST` запросов
+Принимайте сериалиpованный JSON в теле `PUT`/`PATCH`/`POST` запросов
 либо вместо, либо в дополнение к данным из формы. Это создает симметрию
-с сериализованным в JSON телом запрома, например:
+с сериализованным в JSON телом запроcа, например:
 Accept serialized JSON on `PUT`/`PATCH`/`POST` request bodies, either
 instead of or in addition to form-encoded data. This creates symmetry
 with JSON-serialized response bodies, e.g.:
@@ -261,7 +261,7 @@ Serialize foreign key references with a nested object, e.g.:
   ...
 }
 ```
-  
+
 Instead of e.g:
 
 ```json
