@@ -31,7 +31,7 @@ We welcome [contributions](CONTRIBUTING.md) to this guide.
 *  [Предоставляйте стандартные timestamp'ы](#provide-standard-timestamps)
 *  [Используйте время в стандарте UTC отформатированное согласно ISO8601](#use-utc-times-formatted-in-iso8601)
 *  [Используйте однообразное форматирование путей](#use-consistent-path-formats)
-*  [Указывайте пути и аттрибуты в нижнем регистре](#downcase-paths-and-attributes)
+*  [Указывайте пути и атрибуты в нижнем регистре](#downcase-paths-and-attributes)
 *  [Делайте атрибуты связанных ассоциаций вложенными](#nest-foreign-key-relations)
 *  [Оставляйте возможность получение ресурса не только по идентификатору](#support-non-id-dereferencing-for-convenience)
 *  [Генерируйте структурированные ошибки](#generate-structured-errors)
@@ -52,7 +52,7 @@ We welcome [contributions](CONTRIBUTING.md) to this guide.
 ### Return appropriate status codes
 
 Возвращайте соответствующие коды состояния HTTP с каждым
-запросом. Успешные запросы должны возвращать коды в соответствии со
+ответом. Успешные запросы должны возвращать коды в соответствии со
 следующим:
 
 Return appropriate HTTP status codes with each response. Successful
@@ -247,7 +247,7 @@ e.g.
 ```
 
 
-### Указывайте пути и аттрибуты в нижнем регистре
+### Указывайте пути и атрибуты в нижнем регистре
 ### Downcase paths and attributes
 
 Указывайте пути в нижнем регистре разделяя слова тире, таким же образом
