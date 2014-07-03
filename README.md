@@ -63,7 +63,7 @@ We welcome [contributions](CONTRIBUTING.md) to this guide.
 
 Возвращайте соответствующие коды состояния HTTP с каждым
 запросом. Успешные запросы должны возвращать коды в соответствии со
-следующим:
+следующими соглашениями:
 Return appropriate HTTP status codes with each response. Successful
 responses should be coded according to this guide:
 
@@ -82,7 +82,7 @@ responses should be coded according to this guide:
 * `206`: Request succeeded on `GET`, but only a partial response
   returned: см. [далее про диапазоны](#paginate-with-ranges)
 
-Обращайтесь к [спецификацию кодов возврата HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+Обращайтесь к [спецификации кодов возврата HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
 за рекомендациями по кодам возврата для пользовательских ошибок и ошибок сервера.
 Refer to the [HTTP response code spec](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
 for guidance on status codes for user error and server error cases.
