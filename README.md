@@ -41,7 +41,7 @@ We welcome [contributions](CONTRIBUTING.md) to this guide.
 *  [Предоставляйте стандартные timestamp'ы](#provide-standard-timestamps)
 *  [Используйте время в стандарте UTC отформатированное согласно ISO8601](#use-utc-times-formatted-in-iso8601)
 *  [Используйте однообразное форматирование путей](#use-consistent-path-formats)
-*  [Указывайте пути и аттрибуты в нижнем регистре](#downcase-paths-and-attributes)
+*  [Указывайте пути и атрибуты в нижнем регистре](#downcase-paths-and-attributes)
 *  [Делайте атрибуты связанных ассоциаций вложенными](#nest-foreign-key-relations)
 *  [Оставляйте возможность получение ресурса не только по идентификатору](#support-non-id-dereferencing-for-convenience)
 *  [Генерируйте структурированные ошибки](#generate-structured-errors)
@@ -62,8 +62,9 @@ We welcome [contributions](CONTRIBUTING.md) to this guide.
 ### Return appropriate status codes
 
 Возвращайте соответствующие коды состояния HTTP с каждым
-запросом. Успешные запросы должны возвращать коды в соответствии со
+ответом. Успешные запросы должны возвращать коды в соответствии со
 следующими соглашениями:
+
 Return appropriate HTTP status codes with each response. Successful
 responses should be coded according to this guide:
 
@@ -84,6 +85,7 @@ responses should be coded according to this guide:
 
 Обращайтесь к [спецификации кодов возврата HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
 за рекомендациями по кодам возврата для пользовательских ошибок и ошибок сервера.
+
 Refer to the [HTTP response code spec](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
 for guidance on status codes for user error and server error cases.
 
@@ -93,6 +95,7 @@ for guidance on status codes for user error and server error cases.
 Предоставляйте в ответе полное представление ресурса(т.е. объект со всеми
 атрибутами) когда это возможно. Всегда возвращайте полный ресурс в ответах
 с кодами 200 и 201, включая `PUT`/`PATCH` и `DELETE` запросы, например:
+
 Provide the full resource representation (i.e. the object with all
 attributes) whenever possible in the response. Always provide the full
 resource on 200 and 201 responses, including `PUT`/`PATCH` and `DELETE`
@@ -114,6 +117,7 @@ Content-Type: application/json;charset=utf-8
 ```
 
 Ответы с кодом 202 не должны включать полное представление ресурса, например:
+
 202 responses will not include the full resource representation,
 e.g.:
 
@@ -133,6 +137,7 @@ Content-Type: application/json;charset=utf-8
 Принимайте сериалиpованный JSON в теле `PUT`/`PATCH`/`POST` запросов
 либо вместо, либо в дополнение к данным из формы. Это создает симметрию
 с сериализованным в JSON телом запроcа, например:
+
 Accept serialized JSON on `PUT`/`PATCH`/`POST` request bodies, either
 instead of or in addition to form-encoded data. This creates symmetry
 with JSON-serialized response bodies, e.g.:
@@ -162,12 +167,14 @@ $ curl -X POST https://service.com/apps \
 идентификаторы, которые не являются уникальными между всеми экземплярами
 сервиса или могут совпадать с идентификаторами другого ресурса в сервисе,
 особенно автоматически увеличиваемые идентификаторы.
+
 Give each resource an `id` attribute by default. Use UUIDs unless you
 have a very good reason not to. Don’t use IDs that won’t be globally
 unique across instances of the service or other resources in the
 service, especially auto-incrementing IDs.
 
 Отображайте UUID в нижнем регистре, в формате `8-4-4-4-12`, например:
+
 Render UUIDs in downcased `8-4-4-4-12` format, e.g.:
 
 ```
@@ -179,6 +186,7 @@ Render UUIDs in downcased `8-4-4-4-12` format, e.g.:
 
 По умолчанию предоставляйте временные метки(timestamp) `created_at` и `updated_at`
 ресурса, например:
+
 Provide `created_at` and `updated_at` timestamps for resources by default,
 e.g:
 
@@ -192,7 +200,8 @@ e.g:
 ```
 
 Эти временные метки могут не иметь смысла для некоторых ресурсов и, в
-таком случае, могут быть опущены
+таком случае, могут быть опущены.
+
 These timestamps may not make sense for some resources, in which case
 they can be omitted.
 
@@ -201,6 +210,7 @@ they can be omitted.
 
 Принимайте и возвращайте время только в стандарте UTC. Отображайте
 время, отформатированное согласно спецификации ISO8601, например:
+
 Accept and return times in UTC only. Render times in ISO8601 format,
 e.g.:
 
@@ -226,6 +236,10 @@ Use the plural version of a resource name unless the resource in question is a s
 #### Действия
 #### Actions
 
+Отдавайте предпочтение таким схемам бэкенда, которые не требуют специальных
+действий для отдельных ресурсов. В случаях, когда специальные действия
+необходимы, располагайте их после стандартного префикса `actions`, чтобы
+четко отделить их:
 
 Prefer endpoint layouts that don’t need any special actions for
 individual resources. In cases where special actions are needed, place
@@ -235,14 +249,19 @@ them under a standard `actions` prefix, to clearly delineate them:
 /resources/:resource/actions/:action
 ```
 
+например
 e.g.
 
 ```
 /runs/{run_id}/actions/stop
 ```
 
+
+### Указывайте пути и атрибуты в нижнем регистре
 ### Downcase paths and attributes
 
+Указывайте пути в нижнем регистре разделяя слова тире, таким же образом
+как пишутся адреса хостов, например:
 Use downcased and dash-separated path names, for alignment with
 hostnames, e.g:
 
@@ -251,6 +270,9 @@ service-api.com/users
 service-api.com/app-setups
 ```
 
+Имена атрибутов также рекомендуется писать в нижнем регистре, только
+использовать в качестве разделителя подчеркивание, чтобы они
+могли быть написаны в JavaScript без пробелов, например:
 Downcase attributes as well, but use underscore separators so that
 attribute names can be typed without quotes in JavaScript, e.g.:
 
@@ -258,8 +280,10 @@ attribute names can be typed without quotes in JavaScript, e.g.:
 service_class: "first"
 ```
 
+### Делайте атрибуты связанных ассоциаций вложенными
 ### Nest foreign key relations
 
+Сериализуйте внешние ключи во вложенные объекты, например:
 Serialize foreign key references with a nested object, e.g.:
 
 ```json
@@ -272,6 +296,7 @@ Serialize foreign key references with a nested object, e.g.:
 }
 ```
 
+Вместо:
 Instead of e.g:
 
 ```json
@@ -282,6 +307,8 @@ Instead of e.g:
 }
 ```
 
+Этот подход позволит добавить дополнительную информацию о
+связанном ресурсе без изменения структуры ответа, например:
 This approach makes it possible to inline more information about the
 related resource without having to change the structure of the response
 or introduce more top-level response fields, e.g.:
@@ -298,7 +325,14 @@ or introduce more top-level response fields, e.g.:
 }
 ```
 
+### Оставляйте возможность получение ресурса не только по идентификатору
 ### Support non-id dereferencing for convenience
+
+В некоторых случаях конечным пользователя может быть неудобно использовать
+идентификаторы для получения ресурса. Например, пользователь может думать
+о приложениях Heroku используя их имена, но приложения могут идентифицироваться
+по UUID. В этом случае вы можете реализовать получение ресурса и
+по идентификатору и по имени, например:
 
 In some cases it may be inconvenient for end-users to provide IDs to
 identify a resource. For example, a user may think in terms of a Heroku
@@ -311,9 +345,17 @@ $ curl https://service.com/apps/97addcf0-c182
 $ curl https://service.com/apps/www-prod
 ```
 
+Не принимайте только имена исключая доступ по идентификатору.
+
 Do not accept only names to the exclusion of IDs.
 
+### Генерируйте структурированные ошибки
 ### Generate structured errors
+
+Генерируйте единообразные структурированные ответы в случае ошибки.
+Включайте машиночитаемую информацию в поле `id`, описание ошибки
+в поле `message` и, опционально, поле `url` указывающее клиенту на
+дополнительную информацию об ошибке и способы ее устранения, например:
 
 Generate consistent, structured response bodies on errors. Include a
 machine-readable error `id`, a human-readable error `message`, and
@@ -332,23 +374,45 @@ HTTP/1.1 429 Too Many Requests
 }
 ```
 
+Задокументируйте формат тех ошибок и возможных `id` с которыми может
+встретиться пользователь.
+
 Document your error format and the possible error `id`s that clients may
 encounter.
 
+### Поддерживайте кэширование с помощью Etags
 ### Support caching with Etags
+
+Включайте заголовок [ETag](http://ru.wikipedia.org/wiki/HTTP_ETag) во все
+ответы для идентификации версии возвращенного ресурса. Пользователь
+должен иметь возможность проверить актуальность данных в последующих
+запросах с помощью заголовка
+[`If-None-Match`](http://ru.wikipedia.org/wiki/HTTP_ETag#.D0.A2.D0.B8.D0.BF.D0.B8.D1.87.D0.BD.D0.BE.D0.B5_.D0.B8.D1.81.D0.BF.D0.BE.D0.BB.D1.8C.D0.B7.D0.BE.D0.B2.D0.B0.D0.BD.D0.B8.D0.B5).
 
 Include an `ETag` header in all responses, identifying the specific
 version of the returned resource. The user should be able to check for
 staleness in their subsequent requests by supplying the value in the
 `If-None-Match` header.
 
+### Отслеживайте запросы с помощью Request-Id
 ### Trace requests with Request-Ids
+
+Включайте заголовок `Request-Id` с UUID в каждый ответ. Если и сервер
+и клиент логируют значение этого заголовка в дальнейшем это может помочь
+в отслеживании и отладке запросов.
 
 Include a `Request-Id` header in each API response, populated with a
 UUID value. If both the server and client log these values, it will be
 helpful for tracing and debugging requests.
 
+### Организуйте постраничную разбивку с помощью диапазонов
 ### Paginate with Ranges
+
+Разбивайте на страницы ответы, которые могут вернуть большое количество
+данных. Используйте заголовок `Content-Range` для обработки постраничных
+запросов. В разделе [Heroku Platform API on Ranges](https://devcenter.heroku.com/articles/platform-api-reference#ranges)
+вы можете найти информацию про заголовки запросов и ответов, коды состояния,
+ограничения, сортировку и перезоды по страницам.
 
 Paginate any responses that are liable to produce large amounts of data.
 Use `Content-Range` headers to convey pagination requests. Follow the
@@ -356,17 +420,29 @@ example of the [Heroku Platform API on Ranges](https://devcenter.heroku.com/arti
 for the details of request and response headers, status codes, limits,
 ordering, and page-walking.
 
+### Показывайте состояние ограничения частоты запросов
 ### Show rate limit status
+
+Ограничивайте количество запросов от клиентов, чтобы поддерживать качество
+сервиса. Вы можете использовать [token bucket algorithm](http://en.wikipedia.org/wiki/Token_bucket),
+чтобы ограничивать колчество запросов.
 
 Rate limit requests from clients to protect the health of the service
 and maintain high service quality for other clients. You can use a
 [token bucket algorithm](http://en.wikipedia.org/wiki/Token_bucket) to
 quantify request limits.
 
+Возвращайте оставшееся количество запросов с каждым ответом в заголовке
+`RateLimit-Remaining`.
+
 Return the remaining number of request tokens with each request in the
 `RateLimit-Remaining` response header.
 
+### Указывайте версию с помощью заголовков Accept
 ### Version with Accepts header
+
+Версионируйте API с самого начала. Используйте заголовок `Accept` чтобы
+сообщить версию вместе с нестандартным типом содержимого, например:
 
 Version the API from the start. Use the `Accepts` header to communicate
 the version, along with a custom content type, e.g.:
@@ -375,10 +451,17 @@ the version, along with a custom content type, e.g.:
 Accept: application/vnd.heroku+json; version=3
 ```
 
+Предпочтительнее не иметь значения по умолчанию и, вместо этого,
+требовать у клиентов явного указания версии в каждом запросе.
+
 Prefer not to have a default version, instead requiring clients to
 explicitly peg their usage to a specific version.
 
+### Уменьшайте вложенность путей
 ### Minimize path nesting
+
+Для моделей данных с вложенными родительскими/дочерними ресурсами пути
+могут иметь большую вложенность, например:
 
 In data models with nested parent/child resource relationships, paths
 may become deeply nested, e.g.:
@@ -386,6 +469,10 @@ may become deeply nested, e.g.:
 ```
 /orgs/{org_id}/apps/{app_id}/dynos/{dyno_id}
 ```
+
+Ограничивайте вложенность располагая ресурсы в корневом пути.
+Используйте вложенность, чтобы обозначить область видимости коллекции.
+Например, когда dyno принадлежит приложению, а приложение организации:
 
 Limit nesting depth by preferring to locate resources at the root
 path. Use nesting to indicate scoped collections. For example, for the
@@ -399,7 +486,12 @@ case above where a dyno belongs to an app belongs to an org:
 /dynos/{dyno_id}
 ```
 
+### Предоставляйте машиночитаемую JSON схему
 ### Provide machine-readable JSON schema
+
+Предоставляйте машиночитаемую схему, чтобы описать API. Используйте
+[prmd](https://github.com/interagent/prmd) для управления схемой и
+проверки ее правильности с помощью `prmd verify`.
 
 Provide a machine-readable schema to exactly specify your API. Use
 [prmd](https://github.com/interagent/prmd) to manage your schema, and ensure
