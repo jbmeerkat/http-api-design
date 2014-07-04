@@ -439,8 +439,13 @@ information about:
 * Примеры использования API с клиентами на разных языках
 * Examples of using the API with clients in different languages.
 
+### Предоставляйте исполняемые примеры
 ### Provide executable examples
 
+Предоставляйте примеры, показывающие вызовы API в действии,
+которые можно вставить и выполнить в терминале.
+В идеале примеры должны быть такими, чтобы их можно было использовать дословно.
+Таким образом, вы упростите использование API для пользователя.
 Provide executable examples that users can type directly into their
 terminals to see working API calls. To the greatest extent possible,
 these examples should be usable verbatim, to minimize the amount of
@@ -451,6 +456,8 @@ $ export TOKEN=... # acquire from dashboard
 $ curl -is https://$TOKEN@service.com/users
 ```
 
+Если вы используете [prmd](https://github.com/interagent/prmd) для генерации
+документов Markdown, то получить примеры для каждого бэкенда очень просто.
 If you use [prmd](https://github.com/interagent/prmd) to generate Markdown
 docs, you will get examples for each endpoint for free.
 
