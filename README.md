@@ -297,7 +297,7 @@ Instead of e.g:
 }
 ```
 
-Этот подход сделает возможным добавить дополнительную информацию о
+Этот подход позволит добавить дополнительную информацию о
 связанном ресурсе без изменения структуры ответа, например:
 This approach makes it possible to inline more information about the
 related resource without having to change the structure of the response
@@ -335,7 +335,7 @@ $ curl https://service.com/apps/97addcf0-c182
 $ curl https://service.com/apps/www-prod
 ```
 
-Не принимайте только имена исключая доступ по иденитфикатору.
+Не принимайте только имена исключая доступ по идентификатору.
 
 Do not accept only names to the exclusion of IDs.
 
@@ -343,7 +343,7 @@ Do not accept only names to the exclusion of IDs.
 ### Generate structured errors
 
 Генерируйте единообразные структурированные ответы в случае ошибки.
-Включайте машиночитаемую информацию в поле `id`, человекочитаемую информацию
+Включайте машиночитаемую информацию в поле `id`, описание ошибки
 в поле `message` и, опционально, поле `url` указывающее клиенту на
 дополнительную информацию об ошибке и способы ее устранения, например:
 
@@ -395,7 +395,7 @@ Include a `Request-Id` header in each API response, populated with a
 UUID value. If both the server and client log these values, it will be
 helpful for tracing and debugging requests.
 
-### Организуйте постраницную разбивку с помощью диапазонов
+### Организуйте постраничную разбивку с помощью диапазонов
 ### Paginate with Ranges
 
 Разбивайте на страницы ответы, которые могут вернуть большое количество
@@ -414,7 +414,7 @@ ordering, and page-walking.
 ### Show rate limit status
 
 Ограничивайте количество запросов от клиентов, чтобы поддерживать качество
-сервиса для остальных клиентов. Вы можете использовать [token bucket algorithm](http://en.wikipedia.org/wiki/Token_bucket),
+сервиса. Вы можете использовать [token bucket algorithm](http://en.wikipedia.org/wiki/Token_bucket),
 чтобы ограничивать колчество запросов.
 
 Rate limit requests from clients to protect the health of the service
