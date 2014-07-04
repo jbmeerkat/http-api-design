@@ -8,18 +8,28 @@ This guide describes a set of HTTP+JSON API design practices, originally
 extracted from work on the [Heroku Platform API](https://devcenter.heroku.com/articles/platform-api-reference).
 
 Это руководство информирует о дополнениях в этом API и
+рассказывает о новых внутренних API Heroku. Мы надеемся, что
+что это будет интересно разработчикам, не являющимся частью команды Heroku.
 This guide informs additions to that API and also guides new internal
 APIs at Heroku. We hope it’s also of interest to API designers
 outside of Heroku.
 
+
 Our goals here are consistency and focusing on business logic while
-avoiding design bikeshedding. We’re looking for _a good, consistent,
+avoiding design bikeshedding.
+Мы ищем _хороший, последовательный,
+хорошо документированный способ_ проектирования API,
+но не обязательно _единственный/идеальный вариант_
+We’re looking for _a good, consistent,
 well-documented way_ to design APIs, not necessarily _the only/ideal
 way_.
 
+Мы предполагаем, что вы знакомы с основами HTTP+JSON API и не будем
+рассказывать о них в этом руководстве.
 We assume you’re familiar with the basics of HTTP+JSON APIs and won’t
 cover all of the fundamentals of those in this guide.
 
+Мы приветствуем [дополнения](CONTRIBUTING.md) к этому руководству.
 We welcome [contributions](CONTRIBUTING.md) to this guide.
 
 ## Содержание
@@ -53,7 +63,7 @@ We welcome [contributions](CONTRIBUTING.md) to this guide.
 
 Возвращайте соответствующие коды состояния HTTP с каждым
 запросом. Успешные запросы должны возвращать коды в соответствии со
-следующим:
+следующими соглашениями:
 Return appropriate HTTP status codes with each response. Successful
 responses should be coded according to this guide:
 
@@ -72,7 +82,7 @@ responses should be coded according to this guide:
 * `206`: Request succeeded on `GET`, but only a partial response
   returned: см. [далее про диапазоны](#paginate-with-ranges)
 
-Обращайтесь к [спецификацию кодов возврата HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
+Обращайтесь к [спецификации кодов возврата HTTP](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
 за рекомендациями по кодам возврата для пользовательских ошибок и ошибок сервера.
 Refer to the [HTTP response code spec](http://www.w3.org/Protocols/rfc2616/rfc2616-sec10.html)
 for guidance on status codes for user error and server error cases.
@@ -147,7 +157,7 @@ $ curl -X POST https://service.com/apps \
 ### Provide resource (UU)IDs
 
 
-Дайте каждому ресурсу `id` атрибут по умолчанию. Используйте UUID всегда,
+Дайте каждому ресурсу атрибут `id` по умолчанию. Используйте UUID всегда,
 если только у вас нет веской причины не делать этого. Не используйте
 идентификаторы, которые не являются уникальными между всеми экземплярами
 сервиса или могут совпадать с идентификаторами другого ресурса в сервисе,
