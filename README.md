@@ -497,26 +497,47 @@ Provide a machine-readable schema to exactly specify your API. Use
 [prmd](https://github.com/interagent/prmd) to manage your schema, and ensure
 it validates with `prmd verify`.
 
+### Предоставляйте человекопонятную документацию
 ### Provide human-readable docs
 
+Предоставляйте человекопонятную документацию, которую сторонние разработчики смогут использовать
+чтобы лучше понять ваш API
 Provide human-readable documentation that client developers can use to
 understand your API.
 
+Если вы описываете схему используя prmd, как говорилось выше, вы можете легко
+генерировать документы Markdown для всех бэкендов с помощью `prmd doc`.
 If you create a schema with prmd as described above, you can easily
 generate Markdown docs for all endpoints with with `prmd doc`.
 
+Кроме деталей бэкенда, делайте обзор API, содержащий
+информацию о:
 In addition to endpoint details, provide an API overview with
 information about:
 
+* Аутентификации, в том числе acquiring и использование токенов аутентификации
 * Authentication, including acquiring and using authentication tokens.
+
+* Стабильность и версионирование API, в том числе то, как выбрать желаемую версию API
 * API stability and versioning, including how to select the desired API
   version.
+
+* Распростаненные запросы и заголовки ответов
 * Common request and response headers.
+
+* Формат сериализации ошибок
 * Error serialization format.
+
+* Примеры использования API с клиентами на разных языках
 * Examples of using the API with clients in different languages.
 
+### Предоставляйте исполняемые примеры
 ### Provide executable examples
 
+Предоставляйте примеры, показывающие вызовы API в действии,
+которые можно вставить и выполнить в терминале.
+В идеале примеры должны быть такими, чтобы их можно было использовать дословно.
+Таким образом, вы упростите использование API для пользователя.
 Provide executable examples that users can type directly into their
 terminals to see working API calls. To the greatest extent possible,
 these examples should be usable verbatim, to minimize the amount of
@@ -527,6 +548,8 @@ $ export TOKEN=... # acquire from dashboard
 $ curl -is https://$TOKEN@service.com/users
 ```
 
+Если вы используете [prmd](https://github.com/interagent/prmd) для генерации
+документов Markdown, то получить примеры для каждого бэкенда очень просто.
 If you use [prmd](https://github.com/interagent/prmd) to generate Markdown
 docs, you will get examples for each endpoint for free.
 
