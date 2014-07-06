@@ -548,8 +548,8 @@ $ export TOKEN=... # acquire from dashboard
 $ curl -is https://$TOKEN@service.com/users
 ```
 
-Если вы используете [prmd](https://github.com/interagent/prmd) для генерации
-документации в формате Markdown, то получить примеры для каждого бэкенда очень просто.
+Если вы используете prmd, то примеры будут сгененированы
+вместе с документацией в формате Markdown.
 If you use [prmd](https://github.com/interagent/prmd) to generate Markdown
 docs, you will get examples for each endpoint for free.
 
