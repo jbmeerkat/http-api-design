@@ -553,15 +553,23 @@ $ curl -is https://$TOKEN@service.com/users
 If you use [prmd](https://github.com/interagent/prmd) to generate Markdown
 docs, you will get examples for each endpoint for free.
 
+### Предоставляйте информацию о стабильности
 ### Describe stability
 
+Предоставляйте информацию о стабильности API в соответствии со степенью его
+готовности и стабильности, например с помощью флагов протопип/в разработке/продакшн.
 Describe the stability of your API or its various endpoints according to
 its maturity and stability, e.g. with prototype/development/production
 flags.
 
+Просмотрите [политику совместимости API Heroku](https://devcenter.heroku.com/articles/api-compatibility-policy),
+чтобы узнать о возможных подходах в управлении изменениями и стабильностью.
 See the [Heroku API compatibility policy](https://devcenter.heroku.com/articles/api-compatibility-policy)
 for a possible stability and change management approach.
 
+Если ваш API заявлен как стабильный и готовый к использованию в продакшене,
+не вносите изменений, нарушающих обратную совместимость внутри одной версии.
+Если вам нужно сделать такие изменения, создайте новую версию API.
 Once your API is declared production-ready and stable, do not make
 backwards incompatible changes within that API version. If you need to
 make backwards-incompatible changes, create a new API with an
