@@ -619,6 +619,11 @@ Instead of e.g.:
 Be sure to include a trailing newline so that the user’s terminal prompt
 isn’t obstructed.
 
+Для большинства API форматирование ответов не отражается на производительности.
+Вы можете решить не форматировать ответы некоторых бэкендов, чувствительных
+к производительности (например, это касается систем с очень большим трафиком),
+или не делать этого для некоторых клиентов (например, о которых известно,
+что они будут использоваться программами без GUI).
 For most APIs it will be fine performance-wise to pretty-print responses
 all the time. You may consider for performance-sensitive APIs not
 pretty-printing certain endpoints (e.g. very high traffic ones) or not
