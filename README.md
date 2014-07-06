@@ -575,14 +575,22 @@ backwards incompatible changes within that API version. If you need to
 make backwards-incompatible changes, create a new API with an
 incremented version number.
 
+### Требуйте использование TLS
 ### Require TLS
 
+Требуйте использование TLS для доступа к API без исключений. Не стоит тратить время на то,
+чтобы попытаться понять или объяснить, когда использовать TLS, а когда нет.
+Просто требуйте использование TLS для всего.
 Require TLS to access the API, without exception. It’s not worth trying
 to figure out or explain when it is OK to use TLS and when it’s not.
 Just require TLS for everything.
 
+### Форматируйте JSON по умолчанию
 ### Pretty-print JSON by default
 
+Вероятно, в первый раз пользователь воспрользуется вашим API через командную строку
+с помощью curl. Намного легче понять ответ API в командной строке, если он
+будет отформатирован, например:
 The first time a user sees your API is likely to be at the command line,
 using curl. It’s much easier to understand API responses at the
 command-line if they are pretty-printed. For the convenience of these
@@ -599,12 +607,15 @@ developers, pretty-print JSON responses, e.g.:
 }
 ```
 
+Вместо:
 Instead of e.g.:
 
 ```json
 {"beta":false,"email":"alice@heroku.com","id":"01234567-89ab-cdef-0123-456789abcdef","last_login":"2012-01-01T12:00:00Z", "created_at":"2012-01-01T12:00:00Z","updated_at":"2012-01-01T12:00:00Z"}
 ```
 
+Убедитесь, что вставляете дополнительную пустую строку в конце ответа, чтобы
+не портить внешний вид командной строки пользователя.
 Be sure to include a trailing newline so that the user’s terminal prompt
 isn’t obstructed.
 
