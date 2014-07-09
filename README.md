@@ -15,6 +15,10 @@ APIs at Heroku. We hope it’s also of interest to API designers
 outside of Heroku.
 
 
+Наша цель здесь - последовательность, сосредоточение на бизнес-логике
+и избежание бесполезной траты времени на обсуждение незначительных технических деталей
+во время проектирования архитектуры.
+<!-- NOTE см. Parkinson's law of triviality -->
 Our goals here are consistency and focusing on business logic while
 avoiding design bikeshedding.
 Мы ищем _хороший, последовательный,
