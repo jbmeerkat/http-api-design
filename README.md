@@ -15,6 +15,10 @@ APIs at Heroku. We hope it’s also of interest to API designers
 outside of Heroku.
 
 
+Наша цель здесь - последовательность, сосредоточение на бизнес-логике
+и избежание бесполезной траты времени на обсуждение незначительных технических деталей
+во время проектирования архитектуры.
+<!-- NOTE см. Parkinson's law of triviality -->
 Our goals here are consistency and focusing on business logic while
 avoiding design bikeshedding.
 Мы ищем _хороший, последовательный,
@@ -553,28 +557,44 @@ $ curl -is https://$TOKEN@service.com/users
 If you use [prmd](https://github.com/interagent/prmd) to generate Markdown
 docs, you will get examples for each endpoint for free.
 
+### Предоставляйте информацию о стабильности
 ### Describe stability
 
+Предоставляйте информацию о стабильности API в соответствии со степенью его
+готовности и стабильности, например с помощью флагов протопип/в разработке/продакшн.
 Describe the stability of your API or its various endpoints according to
 its maturity and stability, e.g. with prototype/development/production
 flags.
 
+Просмотрите [политику совместимости API Heroku](https://devcenter.heroku.com/articles/api-compatibility-policy),
+чтобы узнать о возможных подходах в управлении изменениями и стабильностью.
 See the [Heroku API compatibility policy](https://devcenter.heroku.com/articles/api-compatibility-policy)
 for a possible stability and change management approach.
 
+Если ваш API заявлен как стабильный и готовый к использованию в продакшене,
+не вносите изменений, нарушающих обратную совместимость внутри одной версии.
+Если вам нужно сделать такие изменения, создайте новую версию API.
 Once your API is declared production-ready and stable, do not make
 backwards incompatible changes within that API version. If you need to
 make backwards-incompatible changes, create a new API with an
 incremented version number.
 
+### Требуйте использование TLS
 ### Require TLS
 
+Требуйте использование TLS для доступа к API без исключений. Не стоит тратить время на то,
+чтобы попытаться понять или объяснить, когда использовать TLS, а когда нет.
+Просто требуйте использование TLS для всего.
 Require TLS to access the API, without exception. It’s not worth trying
 to figure out or explain when it is OK to use TLS and when it’s not.
 Just require TLS for everything.
 
+### Форматируйте JSON по умолчанию
 ### Pretty-print JSON by default
 
+Вероятно, в первый раз пользователь воспрользуется вашим API через командную строку
+с помощью curl. Намного легче понять ответ API в командной строке, если он
+будет отформатирован, например:
 The first time a user sees your API is likely to be at the command line,
 using curl. It’s much easier to understand API responses at the
 command-line if they are pretty-printed. For the convenience of these
@@ -591,15 +611,23 @@ developers, pretty-print JSON responses, e.g.:
 }
 ```
 
+Вместо:
 Instead of e.g.:
 
 ```json
 {"beta":false,"email":"alice@heroku.com","id":"01234567-89ab-cdef-0123-456789abcdef","last_login":"2012-01-01T12:00:00Z", "created_at":"2012-01-01T12:00:00Z","updated_at":"2012-01-01T12:00:00Z"}
 ```
 
+Убедитесь, что вставляете дополнительную пустую строку в конце ответа, чтобы
+не портить внешний вид командной строки пользователя.
 Be sure to include a trailing newline so that the user’s terminal prompt
 isn’t obstructed.
 
+Для большинства API форматирование ответов не отражается на производительности.
+Вы можете решить не форматировать ответы некоторых бэкендов, чувствительных
+к производительности (например, это касается систем с очень большим трафиком),
+или не делать этого для некоторых клиентов (например, если известно,
+что они будут использоваться программами без GUI).
 For most APIs it will be fine performance-wise to pretty-print responses
 all the time. You may consider for performance-sensitive APIs not
 pretty-printing certain endpoints (e.g. very high traffic ones) or not
