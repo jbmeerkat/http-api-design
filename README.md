@@ -96,7 +96,7 @@ for guidance on status codes for user error and server error cases.
 ### Предоставляйте ресурс полностью, когда это возможно
 ### Provide full resources where available
 
-Предоставляйте в ответе полное представление ресурса(т.е. объект со всеми
+Предоставляйте в ответе полное представление ресурса (т.е. объект со всеми
 атрибутами) когда это возможно. Всегда возвращайте полный ресурс в ответах
 с кодами 200 и 201, включая `PUT`/`PATCH` и `DELETE` запросы, например:
 
@@ -188,7 +188,7 @@ Render UUIDs in downcased `8-4-4-4-12` format, e.g.:
 ### Предоставляйте стандартные timestamp'ы
 ### Provide standard timestamps
 
-По умолчанию предоставляйте временные метки(timestamp) `created_at` и `updated_at`
+По умолчанию предоставляйте временные метки (timestamp) `created_at` и `updated_at`
 ресурса, например:
 
 Provide `created_at` and `updated_at` timestamps for resources by default,
@@ -228,7 +228,7 @@ e.g.:
 #### Именование ресурсов
 #### Resource names
 
-Используйте множественное число в имени ресурса, за исключением тех случаев, когда ресурс представлен в системе в единственном числе(например, в большинстве систем у пользователя только одна учетная запись). Это позволит сделать доступ к конкретным ресурсам однообразным, например:
+Используйте множественное число в имени ресурса, за исключением тех случаев, когда ресурс представлен в системе в единственном числе (например, в большинстве систем у пользователя только одна учетная запись). Это позволит сделать доступ к конкретным ресурсам однообразным, например:
 
 ```
 /books
@@ -264,8 +264,8 @@ e.g.
 ### Указывайте пути и атрибуты в нижнем регистре
 ### Downcase paths and attributes
 
-Указывайте пути в нижнем регистре разделяя слова тире, таким же образом
-как пишутся адреса хостов, например:
+Указывайте пути в нижнем регистре, разделяя слова знаком [дефис](https://ru.wikipedia.org/wiki/%D0%94%D0%B5%D1%84%D0%B8%D1%81),
+таким же образом, как пишутся адреса хостов, например:
 Use downcased and dash-separated path names, for alignment with
 hostnames, e.g:
 
@@ -276,7 +276,7 @@ service-api.com/app-setups
 
 Имена атрибутов также рекомендуется писать в нижнем регистре, только
 использовать в качестве разделителя подчеркивание, чтобы они
-могли быть написаны в JavaScript без пробелов, например:
+могли быть написаны в JavaScript без кавычек, например:
 Downcase attributes as well, but use underscore separators so that
 attribute names can be typed without quotes in JavaScript, e.g.:
 
@@ -332,7 +332,7 @@ or introduce more top-level response fields, e.g.:
 ### Оставляйте возможность получение ресурса не только по идентификатору
 ### Support non-id dereferencing for convenience
 
-В некоторых случаях конечным пользователя может быть неудобно использовать
+В некоторых случаях конечным пользователям может быть неудобно использовать
 идентификаторы для получения ресурса. Например, пользователь может думать
 о приложениях Heroku используя их имена, но приложения могут идентифицироваться
 по UUID. В этом случае вы можете реализовать получение ресурса и
@@ -349,7 +349,7 @@ $ curl https://service.com/apps/97addcf0-c182
 $ curl https://service.com/apps/www-prod
 ```
 
-Не принимайте только имена исключая доступ по идентификатору.
+Но не нужно использовать только имена, исключая доступ по идентификатору.
 
 Do not accept only names to the exclusion of IDs.
 
@@ -357,8 +357,8 @@ Do not accept only names to the exclusion of IDs.
 ### Generate structured errors
 
 Генерируйте единообразные структурированные ответы в случае ошибки.
-Включайте машиночитаемую информацию в поле `id`, описание ошибки
-в поле `message` и, опционально, поле `url` указывающее клиенту на
+Включайте идентификатор ошибки в поле `id`, описание в поле `message` и,
+опционально, поле `url` указывающее клиенту на
 дополнительную информацию об ошибке и способы ее устранения, например:
 
 Generate consistent, structured response bodies on errors. Include a
@@ -416,7 +416,7 @@ helpful for tracing and debugging requests.
 данных. Используйте заголовок `Content-Range` для обработки постраничных
 запросов. В разделе [Heroku Platform API on Ranges](https://devcenter.heroku.com/articles/platform-api-reference#ranges)
 вы можете найти информацию про заголовки запросов и ответов, коды состояния,
-ограничения, сортировку и перезоды по страницам.
+ограничения, сортировку и переходы по страницам.
 
 Paginate any responses that are liable to produce large amounts of data.
 Use `Content-Range` headers to convey pagination requests. Follow the
@@ -526,7 +526,7 @@ information about:
 * API stability and versioning, including how to select the desired API
   version.
 
-* Распростаненные запросы и заголовки ответов
+* Распространенные заголовки запросов и ответов
 * Common request and response headers.
 
 * Формат сериализации ошибок
@@ -540,7 +540,7 @@ information about:
 
 Предоставляйте примеры, показывающие вызовы API в действии,
 которые можно вставить и выполнить в терминале.
-В идеале примеры должны быть такими, чтобы их можно было использовать дословно.
+В идеале, примеры должны быть такими, чтобы их можно было использовать дословно.
 Таким образом, вы упростите использование API для пользователя.
 Provide executable examples that users can type directly into their
 terminals to see working API calls. To the greatest extent possible,
